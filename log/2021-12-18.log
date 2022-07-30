@@ -1,0 +1,15 @@
+[2021-12-18 00:01:59] hi ::Nike Vaporwaffle
+[2021-12-18 00:02:20] undefined :stockXApi Error =>Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 00:02:20] 1: update Job Error =>Error: Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 18:58:18] undefined :stockXApi Error =>Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 18:58:19] register Job Error =>Error: Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 21:03:11] undefined :stockXApi Error =>Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 21:03:11] register Job Error =>Error: Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 21:08:37] undefined :stockXApi Error =>Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 21:08:37] register Job Error =>Error: Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 21:12:19] undefined :stockXApi Error =>Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 21:12:19] register Job Error =>Error: Error: Status code: 400 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2021-12-18 23:15:01] Nike Vaporwaffle :webhook Sending Error =>TypeError: Cannot read property 'size' of undefined
+[2021-12-18 23:15:01] register Job Error =>Error: TypeError: Cannot read property 'size' of undefined
+[2021-12-18 23:57:48] Nike Vaporwaffle :webhook Sending Error =>TypeError: Cannot read property 'addField' of undefined
+[2021-12-18 23:57:48] register Job Error =>Error: TypeError: Cannot read property 'addField' of undefined

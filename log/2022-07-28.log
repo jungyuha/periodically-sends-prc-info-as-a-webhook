@@ -1,0 +1,4 @@
+[2022-07-28 18:36:06] undefined :kreamApi Error =>ReferenceError: fixVal1 is not defined
+[2022-07-28 18:36:06] register Job Error =>Error: ReferenceError: fixVal1 is not defined
+[2022-07-28 22:11:05] undefined :stockXApi Error =>Error: Status code: 403 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2022-07-28 22:11:05] register Job Error =>Error: Error: Status code: 403 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt

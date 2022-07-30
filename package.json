@@ -1,0 +1,33 @@
+{
+  "name": "discord-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "gulp"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "discord-webhook-node": "^1.1.8",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "~4.16.1",
+    "express-oauth-server": "^2.0.0",
+    "express-promise-router": "^4.1.0",
+    "express-validator": "^6.11.1",
+    "got": "^11.8.2",
+    "gulp": "^4.0.2",
+    "gulp-eslint": "^6.0.0",
+    "gulp-load-plugins": "^2.0.6",
+    "gulp-nodemon": "^2.5.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "stockx-api": "^1.1.0",
+    "toad-scheduler": "^1.6.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
+  }
+}

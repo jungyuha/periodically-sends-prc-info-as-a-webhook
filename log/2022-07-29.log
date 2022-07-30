@@ -1,0 +1,6 @@
+[2022-07-29 09:11:37] undefined :kreamApi Error =>ReferenceError: product is not defined
+[2022-07-29 09:11:37] register Job Error =>Error: ReferenceError: product is not defined
+[2022-07-29 12:04:47] register Job Error =>ReferenceError: info is not defined
+[2022-07-29 20:34:02] undefined :stockXApi Error =>Error: Status code: 403 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2022-07-29 20:34:02] register Job Error =>Error: Error: Status code: 403 - body: /Users/yuha/Desktop/discoer/node_modules/stockx-api/src/utils/../../test/body.txt
+[2022-07-29 20:34:39] register Job Error =>TypeError: createTemplateService.procTemplate is not a function

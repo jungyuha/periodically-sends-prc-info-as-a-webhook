@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>COMPARE PRC</title>
+<link rel="stylesheet" href="/discord/statics/css/styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<style> .modal { position: absolute; top: 10; left: 0; right:0;bottom:0; width: 100%; height: 100%; display: none;background-color: rgba(0, 0, 0, 0.4);} </style>
+</head>
+<!-- Register Job Start -->
+<div class="modal">
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-7">
+			<div class="card shadow-lg border-0 rounded-lg mt-5">
+				<div class="card-header"><h3 class="text-center font-weight-light my-4">Register Job</h3></div>
+				<div class="card-body">
+					<form id="jobRegisterFrm" name="jobRegisterFrm" method="post">
+						<input class="form-control" id="updateProcessId" type="text" hidden/>
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<input class="form-control" id="inputStockXProdId" type="text" placeholder="Enter StockXProdId" />
+									<label for="inputStockXProdId">Input StockX Prod Nm</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-floating">
+									<input class="form-control" id="inputKreamProdId" type="text" placeholder="Enter KreamProdId" />
+									<label for="inputKreamProdId">Input Kream Prod Id</label>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<input class="form-control" id="inputDeliveryFeeToUs" type="number" min=0  placeholder="Enter delivery-Fee" />
+									<label for="inputDeliveryFeeToUs" id="deliveryFeeToUsLabel">택배비(한국 -> 미국 / 원화 입력)</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<input class="form-control" id="inputDeliveryFeeToKr" type="number" min=0  placeholder="Enter delivery-Fee" />
+									<label for="inputDeliveryFeeToKr" id="deliveryFeeToKrLabel">택배비(미국 -> 한국 / 달러 입력)</label>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<input class="form-control" id="inputExchange" type="number" min=0  placeholder="Enter delivery-Fee" />
+									<label for="inputExchange" id="exchangeLabel">환율(1달러당)</label>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<select name="intervalUnit" id="intervalUnit" onchange="comparePrcMain.selectOnChange();" style="width:100%">           
+										<option value="x"> Choose Interval Unit</option> 
+										<option value="once">immediately</option>    
+										<option value="days">Day</option>    
+										<option value="hours">Hours</option>
+										<option value="minutes">Minutes</option>
+									 </select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<input class="form-control" id="inputInterval" type="number" min=0  placeholder="Enter Interval" />
+									<label for="inputInterval" id="interValLabel">Interval</label>
+								</div>
+							</div>
+						</div>
+						<div class="mt-4 mb-0" id="register_tag">
+							<div class="d-grid"><a class="btn btn-primary btn-block" onclick="comparePrcMain.registerJob();">Register Job</a></div>
+						</div>
+						<div class="mt-4 mb-0" id="update_tag">
+							<a class="btn btn-primary4 loadingClick" onclick="comparePrcMain.updateJob('start')">restart</a>
+							<a class="btn btn-primary3 loadingClick" onclick="comparePrcMain.updateJob('stop')">stop</a>
+							<a class="btn btn-primary2 loadingClick" onclick="comparePrcMain.updateJob('delete')">Delete</a>
+							<a class="btn btn-primary loadingClick" onclick="comparePrcMain.updateJob('update')">update</a>
+						</div>
+						<div class="mt-4 mb-0">
+							<div class="d-grid"><a class="btn btn-primary btn-block loadingClick" onclick="comparePrcMain.closeModal();">Close</a></div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- Register Job End -->
+<body class="sb-nav-fixed">
+	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+		<!-- Navbar Brand-->
+		<a class="navbar-brand ps-3" href="/discord/main">Compare Price</a>
+		<!-- Sidebar Toggle-->
+		<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+	</nav>
+	<div id="layoutSidenav">
+		<div id="layoutSidenav_nav">
+			<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+				<div class="sb-sidenav-menu">
+					<div class="nav">
+						<div class="sb-sidenav-menu-heading">Menu</div>
+						<a class="nav-link" href="/discord/main">
+							<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+							Dashboard
+						</a>
+				</div>
+				<div class="sb-sidenav-footer">
+					<div class="small">Made by:</div>
+					Yuha (yooha9621@gmail.com)
+				</div>
+			</nav>
+		</div>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<h1 class="mt-4">Dashboard</h1>
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item active">compare price</li>
+					</ol>
+					<div class="row">
+						<div class="col-xl-3 col-md-6">
+							<div class="card bg-primary text-white mb-4">
+								<div class="card-body">Register Job</div>
+								<div class="card-footer d-flex align-items-center justify-content-between">
+									<a class="small text-white stretched-link" href="javascript:$('.modal').css('display','block');$('#update_tag').css('display','none');
+									$('#register_tag').css('display','block');">Click Here</a>
+									<div class="small text-white"><i class="fas fa-angle-right"></i></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-md-6">
+							<div class="card bg-success text-white mb-4">
+								<div class="card-body">Refresh Table</div>
+								<div class="card-footer d-flex align-items-center justify-content-between">
+									<a class="small text-white stretched-link" onclick="comparePrcMain.refreshTable();" style="cursor:pointer">Click Here</a>
+									<div class="small text-white"><i class="fas fa-angle-right"></i></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-md-6">
+							<div class="card bg-danger text-white mb-4">
+								<div class="card-body">stop all process</div>
+								<div class="card-footer d-flex align-items-center justify-content-between">
+									<a class="small text-white stretched-link" onclick="comparePrcMain.stopAllProcess();" style="cursor:pointer" >Click Here</a>
+									<div class="small text-white"><i class="fas fa-angle-right"></i></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-table me-1"></i>
+							Resistered Job Table
+						</div>
+						<div class="card-body">
+							<table id="datatablesSimple">
+								<thead>
+									<tr>
+										<th>process Id</th>
+										<th>stockX Url</th>
+										<th>kream Url</th>
+										<th>intervalUnit</th>
+										<th>interval</th>
+										<th>process status</th>
+										<th>last sent</th>
+									</tr>
+								</thead>
+								<tbody id="dynamicTbody">
+									<% for(key in processInfo){%>
+										<tr onclick="comparePrcMain.updateModalOpen('<%= key %>');">
+											<td id="tdProcessId<%= key %>"><%= processInfo[key].processId %></td>
+											<td id="tdStockXUrl<%= key %>"><%= processInfo[key].stockXUrl %></td>
+											<td id="tdKreamUrl<%= key %>"><%= processInfo[key].kreamUrl %></td>
+											<td id="tdIntervalUnit<%= key %>"><%= processInfo[key].intervalUnit %></td>
+											<td id="tdInterval<%= key %>"><%= processInfo[key].interval %></td>
+											<td id="tdStatus<%= key %>"><%= processInfo[key].status %></td>
+											<td id="tdLastSent<%= key %>"><%= processInfo[key].lastSent %></td>
+										</tr>
+									<%}%>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</main>
+			<footer class="py-4 bg-light mt-auto">
+				<div class="container-fluid px-4">
+					<div class="d-flex align-items-center justify-content-between small">
+						<div class="text-muted">Copyright &copy; Yuha Website 2021</div>
+					</div>
+				</div>
+			</footer>
+			<div class="loading-wrapper" id="loadingLayer" style="display:none" >
+				<div class="loading">
+					<img src="/discord/statics/images/spinner2.gif" width="100px">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+</body>
+</html>
+<script type="text/javascript">
+	var globalProcessInfo = {};	//job 정보
+    document.addEventListener("DOMContentLoaded", function(){
+	var processInfoJSON = '<%- JSON.stringify(processInfo) %>';
+	globalProcessInfo = JSON.parse(processInfoJSON);
+		const sidebarToggle = document.body.querySelector('#sidebarToggle');
+		if (sidebarToggle) {
+			sidebarToggle.addEventListener('click', event => {
+				event.preventDefault();
+				document.body.classList.toggle('sb-sidenav-toggled');
+				localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+			});
+		}
+		const datatablesSimple = document.getElementById('datatablesSimple');
+		if (datatablesSimple) {
+			new simpleDatatables.DataTable(datatablesSimple);
+		}
+    });
+    if(comparePrcMain == null) var comparePrcMain = {};
+	
+	// 입력폼 validation
+	comparePrcMain.formValidation = function formValidation(){
+		if($("#inputStockXProdId").val() == null || $("#inputStockXProdId").val() == ''){
+			alert("input StockXProdNm... -_- ");
+			return false;
+		}
+		if($("#inputKreamProdId").val() == null || $("#inputKreamProdId").val() == ''){
+			alert("input KreamProdId... -_- ");
+			return false;
+		}
+		if($("#intervalUnit option:selected").val()=='x'){
+			alert("choose Interval Unit... -_- ");
+			return false;
+		}
+		if($('#inputInterval').val() == null || $('#inputInterval').val() == '' || Number($('#inputInterval').val())<=0){
+			if($("#intervalUnit option:selected").val() == 'once'){
+				$('#inputInterval').val(0);
+			}
+			else{
+				alert("set Valid Interval Value... -_- ");
+				return false;
+			}
+		}
+		if($('#inputExchange').val() == null || $('#inputExchange').val() == '' || Number($('#inputExchange').val())<=0){
+			alert("환율 설정 하세요.");
+			return false;
+		}
+		if($('#inputDeliveryFeeToUs').val() == null || $('#inputDeliveryFeeToUs').val() == '' || Number($('#inputDeliveryFeeToUs').val())<=0){
+			$('#inputDeliveryFeeToUs').val(0);
+		}
+		if($('#inputDeliveryFeeToKr').val() == null || $('#inputDeliveryFeeToKr').val() == '' || Number($('#inputDeliveryFeeToKr').val())<=0){
+			$('#inputDeliveryFeeToKr').val(0);
+		}
+		return true;
+	};
+	// 로딩 시작
+	comparePrcMain.loadingStart = function loadingStart(){
+		$('#loadingLayer').css('display','block');
+		$('#loadingClick').css('pointer-events','none');
+	};
+	// 로딩 끝
+	comparePrcMain.loadingEnd = function loadingEnd(){
+		$('#loadingLayer').css('display','none');
+		$('#loadingClick').css('pointer-events','auto');
+	};
+	//job 테이블 렌더링
+	comparePrcMain.tableRerendering = function tableRerendering(processInfo){
+				globalProcessInfo = processInfo;
+				var html = '';	
+				console.log(Object.keys(processInfo).length);
+				if(Object.keys(processInfo).length == 0){
+					html += '<tr>';
+				html += '<td class="dataTables-empty" colspan="7">No entries found</td>';
+				html += '</tr>';	
+				}
+				for(key in processInfo){
+				html += '<tr onclick="comparePrcMain.updateModalOpen('+processInfo[key].processId+');">';
+				html += '<td id="tdProcessId'+processInfo[key].processId+'">'+processInfo[key].processId+'</td>';
+				html += '<td id="tdStockXUrl'+processInfo[key].processId+'">'+processInfo[key].stockXUrl+'</td>';
+				html += '<td id="tdKreamUrl'+processInfo[key].processId+'">'+processInfo[key].kreamUrl+'</td>';
+				html += '<td id="tdIntervalUnit'+processInfo[key].processId+'">'+processInfo[key].intervalUnit+'</td>';
+				html += '<td id="tdInterval'+processInfo[key].processId+'">'+processInfo[key].interval+'</td>';
+				html += '<td id="tdStatus'+processInfo[key].processId+'">'+processInfo[key].status+'</td>';
+				html += '<td id="tdLastSent'+processInfo[key].processId+'">'+processInfo[key].lastSent+'</td>';
+				html += '</tr>';	
+				}
+				$("#dynamicTbody").empty();
+				$("#dynamicTbody").append(html);
+	};
+	//job 등록
+    comparePrcMain.registerJob = function registerJob(){
+		$('.modal').css('display','block');
+		if(!comparePrcMain.formValidation()){
+			return;
+		}
+		//form validation End
+		comparePrcMain.loadingStart();
+			$.ajax({ 
+			url: "/discord/registerJob", 
+			data: {
+				stockXProdId : $("#inputStockXProdId").val() ,
+				kreamProdId : $("#inputKreamProdId").val() ,
+				intervalUnit : $("#intervalUnit option:selected").val() ,
+				interval : $("#inputInterval").val() ,
+				deliveryFeeToUs : $("#inputDeliveryFeeToUs").val() ,
+				deliveryFeeToKr : $("#inputDeliveryFeeToKr").val() ,
+				exchange : $("#inputExchange").val()
+				}, 
+			method: "POST", 
+			dataType: "json"
+			})
+			.done(function(res) {
+				comparePrcMain.closeModal();
+				comparePrcMain.tableRerendering(res.processInfo);
+				comparePrcMain.loadingEnd();
+			})
+			.fail(function(xhr, status, errorThrown) {
+				comparePrcMain.loadingEnd();
+				alert("실패하였습니다.잠시 후 다시 이용해주세요.");
+			})
+};
+	//job 수정
+    comparePrcMain.updateJob = function updateJob(updateType){
+		$('.modal').css('display','block');
+		if(!comparePrcMain.formValidation()){
+			return;
+		}
+		if (confirm("프로세스를 수정하시겠습니까?") == false){
+			return;
+		}
+		//form validation End
+		comparePrcMain.loadingStart();
+			$.ajax({ 
+			url: "/discord/updateProcess", 
+			data: {
+				updateType : updateType,
+				processId : $("#updateProcessId").val() ,
+				stockXProdId : $("#inputStockXProdId").val() ,
+				kreamProdId : $("#inputKreamProdId").val() ,
+				intervalUnit : $("#intervalUnit option:selected").val() ,
+				interval : $("#inputInterval").val() ,
+				deliveryFeeToUs : $("#inputDeliveryFeeToUs").val() ,
+				deliveryFeeToKr : $("#inputDeliveryFeeToKr").val() ,
+				exchange : $("#inputExchange").val()
+				}, 
+			method: "POST", 
+			dataType: "json"
+			})
+			.done(function(res) {
+				comparePrcMain.closeModal();
+				comparePrcMain.tableRerendering(res.processInfo);
+				comparePrcMain.loadingEnd();
+			})
+			.fail(function(xhr, status, errorThrown) {
+				comparePrcMain.loadingEnd();
+				alert("실패하였습니다.잠시 후 다시 이용해주세요.");
+			})
+};
+comparePrcMain.closeModal = function closeModal(){
+	$('.modal').css('display','none');
+	$("#inputStockXProdId").val("");
+	$("#inputKreamProdId").val("");
+	$("#intervalUnit").val("");
+	$("#inputInterval").val("");
+	$("#updateProcessId").val(""); 
+	$("#inputDeliveryFeeToUs").val("");
+	$("#inputDeliveryFeeToKr").val("");
+	$("#inputExchange").val("");
+
+};
+
+comparePrcMain.updateModalOpen = function updateModalOpen(key){
+	$("#inputStockXProdId").val(globalProcessInfo[key].stockXProdId);
+	$("#inputKreamProdId").val(globalProcessInfo[key].kreamProdId);
+	$("#intervalUnit").val(globalProcessInfo[key].intervalUnit);
+	$("#inputInterval").val(globalProcessInfo[key].interval);
+	$("#inputDeliveryFeeToUs").val(globalProcessInfo[key].deliveryFeeToUs);
+	$("#inputDeliveryFeeToKr").val(globalProcessInfo[key].deliveryFeeToKr);
+	$("#inputExchange").val(globalProcessInfo[key].exchange);
+	$('#update_tag').css('display','block');
+	$('#register_tag').css('display','none');
+	$("#updateProcessId").val(key);
+	$('.modal').css('display','block');
+};
+
+//모든 프로세스 멈춤
+comparePrcMain.stopAllProcess = function stopAllProcess(){
+		if (confirm("모든 프로세스가 정지됩니다.") == false){
+			return;
+		}
+		comparePrcMain.loadingStart();
+        $.ajax({ 
+            url: "/discord/stopAllProcess", 
+            data: {
+            }, 
+            method: "GET", 
+            dataType: "json"
+        })
+        .done(function(res) {
+			comparePrcMain.loadingEnd();
+			comparePrcMain.tableRerendering(res.processInfo);
+        })
+        .fail(function(xhr, status, errorThrown) {
+			comparePrcMain.loadingEnd();
+            alert("실패하였습니다.잠시 후 다시 시도해주세요.");
+        })
+};
+
+//테이블 새로고침
+comparePrcMain.refreshTable = function refreshTable(){
+	comparePrcMain.loadingEnd();
+        $.ajax({ 
+            url: "/discord/refreshTable", 
+            data: {
+            }, 
+            method: "GET", 
+            dataType: "json"
+        })
+        .done(function(res) {
+			comparePrcMain.tableRerendering(res.processInfo);
+			comparePrcMain.loadingEnd();
+        })
+        .fail(function(xhr, status, errorThrown) {
+			comparePrcMain.loadingEnd();
+            alert("조회에 실패하였습니다.잠시 후 다시 시도해주세요.");
+        })
+};
+
+comparePrcMain.selectOnChange = function selectOnChange(){
+	$('#interValLabel').text("Input Interval "+$("#intervalUnit option:selected").val());
+	// readonly 삭제
+	$("#inputInterval").removeAttr("readonly"); 
+
+	var inputIntervalType;
+	var inputInterval;
+	switch ($("#intervalUnit option:selected").val()){
+    case 'days' :
+		inputIntervalType = "days";
+		inputInterval = $("#inputInterval").val();
+        break;
+    case 'hours' :
+		inputIntervalType = "hours";
+		inputInterval = $("#inputInterval").val();
+        break;
+    case 'minutes' :
+		inputIntervalType = "minutes";
+		inputInterval = $("#inputInterval").val();
+        break;
+	case 'once' :
+		inputIntervalType = "once";
+		$('#inputInterval').val(0);
+		$("#inputInterval").attr("readonly",true); 
+		$('#interValLabel').text("즉시 전송");
+        break;
+    default :
+		inputIntervalType = "X";
+		inputInterval = 0 ;
+		$('#interValLabel').text("choose Interval Unit");
+}
+};
+
+</script>
