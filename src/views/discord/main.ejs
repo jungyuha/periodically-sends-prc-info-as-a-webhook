@@ -83,10 +83,11 @@
 							<div class="d-grid"><a class="btn btn-primary btn-block" onclick="comparePrcMain.registerJob();">Register Job</a></div>
 						</div>
 						<div class="mt-4 mb-0" id="update_tag">
-							<a class="btn btn-primary4 loadingClick" onclick="comparePrcMain.updateJob('start')">restart</a>
-							<a class="btn btn-primary3 loadingClick" onclick="comparePrcMain.updateJob('stop')">stop</a>
-							<a class="btn btn-primary2 loadingClick" onclick="comparePrcMain.updateJob('delete')">Delete</a>
-							<a class="btn btn-primary loadingClick" onclick="comparePrcMain.updateJob('update')">update</a>
+							<a class="btn btn-primary4 loadingClick update_tag" onclick="comparePrcMain.updateJob('start')">restart</a>
+							<a class="btn btn-primary3 loadingClick update_tag" onclick="comparePrcMain.updateJob('stop')">stop</a>
+							<a class="btn btn-primary2 loadingClick update_tag" onclick="comparePrcMain.updateJob('delete')">Delete</a>
+							<a class="btn btn-primary loadingClick update_tag" onclick="comparePrcMain.updateJob('update')">update</a>
+							<a class="btn btn-primary loadingClick" onclick="comparePrcMain.sendWebhook()">sendWebhook</a>
 						</div>
 						<div class="mt-4 mb-0">
 							<div class="d-grid"><a class="btn btn-primary btn-block loadingClick" onclick="comparePrcMain.closeModal();">Close</a></div>
@@ -115,7 +116,7 @@
 						<div class="sb-sidenav-menu-heading">Menu</div>
 						<a class="nav-link" href="/discord/main">
 							<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-							Dashboard
+							실시간 이율 자동 알림 웹서비스
 						</a>
 				</div>
 				<div class="sb-sidenav-footer">
@@ -134,7 +135,7 @@
 					<div class="row">
 						<div class="col-xl-3 col-md-6">
 							<div class="card bg-primary text-white mb-4">
-								<div class="card-body">Register Job</div>
+								<div class="card-body">배치(Job) 등록</div>
 								<div class="card-footer d-flex align-items-center justify-content-between">
 									<a class="small text-white stretched-link" href="javascript:$('.modal').css('display','block');$('#update_tag').css('display','none');
 									$('#register_tag').css('display','block');">Click Here</a>
@@ -144,7 +145,7 @@
 						</div>
 						<div class="col-xl-3 col-md-6">
 							<div class="card bg-success text-white mb-4">
-								<div class="card-body">Refresh Table</div>
+								<div class="card-body">배치(Job) 목록 새로고침</div>
 								<div class="card-footer d-flex align-items-center justify-content-between">
 									<a class="small text-white stretched-link" onclick="comparePrcMain.refreshTable();" style="cursor:pointer">Click Here</a>
 									<div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -153,7 +154,7 @@
 						</div>
 						<div class="col-xl-3 col-md-6">
 							<div class="card bg-danger text-white mb-4">
-								<div class="card-body">stop all process</div>
+								<div class="card-body">배치(Job) 전체 일시정지</div>
 								<div class="card-footer d-flex align-items-center justify-content-between">
 									<a class="small text-white stretched-link" onclick="comparePrcMain.stopAllProcess();" style="cursor:pointer" >Click Here</a>
 									<div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -173,22 +174,24 @@
 										<th>process Id</th>
 										<th>stockX Url</th>
 										<th>kream Url</th>
-										<th>intervalUnit</th>
-										<th>interval</th>
-										<th>process status</th>
-										<th>last sent</th>
+										<th>전송타입</th>
+										<th>전송주기</th>
+										<th>배치 상태</th>
+										<th>마지막 전송일시</th>
+										<th>배치(JOB) 수정일시</th>
 									</tr>
 								</thead>
 								<tbody id="dynamicTbody">
 									<% for(key in processInfo){%>
 										<tr onclick="comparePrcMain.updateModalOpen('<%= key %>');">
-											<td id="tdProcessId<%= key %>"><%= processInfo[key].processId %></td>
-											<td id="tdStockXUrl<%= key %>"><%= processInfo[key].stockXUrl %></td>
-											<td id="tdKreamUrl<%= key %>"><%= processInfo[key].kreamUrl %></td>
-											<td id="tdIntervalUnit<%= key %>"><%= processInfo[key].intervalUnit %></td>
-											<td id="tdInterval<%= key %>"><%= processInfo[key].interval %></td>
-											<td id="tdStatus<%= key %>"><%= processInfo[key].status %></td>
-											<td id="tdLastSent<%= key %>"><%= processInfo[key].lastSent %></td>
+											<td id="tdProcessId<%= key %>"><input id="tdProcessId<%= key %>" type="hidden" value="<%= processInfo[key].processId %>"/><%= processInfo[key].processId %></td>
+											<td id="tdStockXUrl<%= key %>"><input id="tdStockXUrl<%= key %>" type="hidden" value="<%= processInfo[key].stockXUrl %>"/><%= processInfo[key].stockXUrl %></td>
+											<td id="tdKreamUrl<%= key %>"><input id="tdKreamUrl<%= key %>" type="hidden" value="<%= processInfo[key].kreamUrl %>"/><%= processInfo[key].kreamUrl %></td>
+											<td id="tdIntervalUnit<%= key %>"><input id="tdIntervalUnit<%= key %>" type="hidden" value="<%= processInfo[key].intervalUnit %>"/><%= processInfo[key].intervalUnit %></td>
+											<td id="tdInterval<%= key %>"><input id="tdInterval<%= key %>" type="hidden" value="<%= processInfo[key].interval %>"/><%= processInfo[key].interval %></td>
+											<td id="tdStatus<%= key %>"><input id="tdStatus<%= key %>" type="hidden" value="<%= processInfo[key].status %>"/><%= processInfo[key].status %></td>
+											<td id="tdLastSent<%= key %>"><input id="tdLastSent<%= key %>" type="hidden" value="<%= processInfo[key].lastSent %>"/><%= processInfo[key].lastSent %></td>
+											<td id="tdLastModified<%= key %>"><input id="tdLastModified<%= key %>" type="hidden" value="<%= processInfo[key].lastModified %>"/><%= processInfo[key].lastModified %></td>
 										</tr>
 									<%}%>
 								</tbody>
@@ -245,7 +248,7 @@
 			alert("input KreamProdId... -_- ");
 			return false;
 		}
-		if($("#intervalUnit option:selected").val()=='x'){
+		if($("#intervalUnit option:selected").val()== null || $("#intervalUnit option:selected").val()=='x'){
 			alert("choose Interval Unit... -_- ");
 			return false;
 		}
@@ -284,7 +287,6 @@
 	comparePrcMain.tableRerendering = function tableRerendering(processInfo){
 				globalProcessInfo = processInfo;
 				var html = '';	
-				console.log(Object.keys(processInfo).length);
 				if(Object.keys(processInfo).length == 0){
 					html += '<tr>';
 				html += '<td class="dataTables-empty" colspan="7">No entries found</td>';
@@ -292,14 +294,15 @@
 				}
 				for(key in processInfo){
 				html += '<tr onclick="comparePrcMain.updateModalOpen('+processInfo[key].processId+');">';
-				html += '<td id="tdProcessId'+processInfo[key].processId+'">'+processInfo[key].processId+'</td>';
+				html += '<td id="tdProcessId'+processInfo[key].processId+'">'+'<input id="tdProcessId'+processInfo[key].processId+'" type="hidden" value="'+processInfo[key].processId+'"/>'+processInfo[key].processId+'</td>';
 				html += '<td id="tdStockXUrl'+processInfo[key].processId+'">'+processInfo[key].stockXUrl+'</td>';
 				html += '<td id="tdKreamUrl'+processInfo[key].processId+'">'+processInfo[key].kreamUrl+'</td>';
 				html += '<td id="tdIntervalUnit'+processInfo[key].processId+'">'+processInfo[key].intervalUnit+'</td>';
 				html += '<td id="tdInterval'+processInfo[key].processId+'">'+processInfo[key].interval+'</td>';
 				html += '<td id="tdStatus'+processInfo[key].processId+'">'+processInfo[key].status+'</td>';
 				html += '<td id="tdLastSent'+processInfo[key].processId+'">'+processInfo[key].lastSent+'</td>';
-				html += '</tr>';	
+				html += '<td id="tdLastModified'+processInfo[key].processId+'">'+processInfo[key].lastModified+'</td>';
+				html += '</tr>';
 				}
 				$("#dynamicTbody").empty();
 				$("#dynamicTbody").append(html);
@@ -336,7 +339,7 @@
 				alert("실패하였습니다.잠시 후 다시 이용해주세요.");
 			})
 };
-	//job 수정
+	//job 수정 
     comparePrcMain.updateJob = function updateJob(updateType){
 		$('.modal').css('display','block');
 		if(!comparePrcMain.formValidation()){
@@ -373,6 +376,43 @@
 				alert("실패하였습니다.잠시 후 다시 이용해주세요.");
 			})
 };
+
+// webhook 보내기
+comparePrcMain.sendWebhook = function sendWebhook(){
+	$('.modal').css('display','block');
+	if(!comparePrcMain.formValidation()){
+		return;
+	}
+	if (confirm("메시지를 보내시겠습니까?") == false){
+		return;
+	}
+	//form validation End
+	comparePrcMain.loadingStart();
+		$.ajax({ 
+		url: "/discord/sendWebhook", 
+		data: {
+			processId : $("#updateProcessId").val() ,
+			stockXProdId : $("#inputStockXProdId").val() ,
+			kreamProdId : $("#inputKreamProdId").val() ,
+			intervalUnit : $("#intervalUnit option:selected").val() ,
+			interval : $("#inputInterval").val() ,
+			deliveryFeeToUs : $("#inputDeliveryFeeToUs").val() ,
+			deliveryFeeToKr : $("#inputDeliveryFeeToKr").val() ,
+			exchange : $("#inputExchange").val()
+			}, 
+		method: "POST", 
+		dataType: "json"
+		})
+		.done(function(res) {
+			comparePrcMain.closeModal();
+			comparePrcMain.tableRerendering(res.processInfo);
+			comparePrcMain.loadingEnd();
+		})
+		.fail(function(xhr, status, errorThrown) {
+			comparePrcMain.loadingEnd();
+			alert("실패하였습니다.잠시 후 다시 이용해주세요.");
+		})
+};
 comparePrcMain.closeModal = function closeModal(){
 	$('.modal').css('display','none');
 	$("#inputStockXProdId").val("");
@@ -387,6 +427,15 @@ comparePrcMain.closeModal = function closeModal(){
 };
 
 comparePrcMain.updateModalOpen = function updateModalOpen(key){
+	console.log("!!!!"  + globalProcessInfo[key].intervalUnit);
+	if(globalProcessInfo[key].intervalUnit == 'once'){
+		$('.update_tag').css('display','none');
+		$('#register_tag').css('display','none');
+	}
+	else{
+		$('.update_tag').css('display','block');
+		$('#register_tag').css('display','none');		
+	}
 	$("#inputStockXProdId").val(globalProcessInfo[key].stockXProdId);
 	$("#inputKreamProdId").val(globalProcessInfo[key].kreamProdId);
 	$("#intervalUnit").val(globalProcessInfo[key].intervalUnit);
@@ -394,8 +443,6 @@ comparePrcMain.updateModalOpen = function updateModalOpen(key){
 	$("#inputDeliveryFeeToUs").val(globalProcessInfo[key].deliveryFeeToUs);
 	$("#inputDeliveryFeeToKr").val(globalProcessInfo[key].deliveryFeeToKr);
 	$("#inputExchange").val(globalProcessInfo[key].exchange);
-	$('#update_tag').css('display','block');
-	$('#register_tag').css('display','none');
 	$("#updateProcessId").val(key);
 	$('.modal').css('display','block');
 };
@@ -434,6 +481,7 @@ comparePrcMain.refreshTable = function refreshTable(){
             dataType: "json"
         })
         .done(function(res) {
+			console.log(res);
 			comparePrcMain.tableRerendering(res.processInfo);
 			comparePrcMain.loadingEnd();
         })

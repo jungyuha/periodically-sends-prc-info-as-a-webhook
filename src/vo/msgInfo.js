@@ -1,3 +1,11 @@
+/**
+ * 경로 :src/vo/msgInfo.js
+ * 분류 : VO
+ * 용도 : webhook 메시지 가공에 필요한 사이즈별 상세 상품 정보 VO
+ * @date        : 2022-09
+ * @author      : yuha
+ * @version	: 3.0
+ */
 module.exports =  class msgInfo {
     constructor(){
         this.kream_prc_highest_bid = null;  // no1 : kream_prc_highest_bid
@@ -14,6 +22,9 @@ module.exports =  class msgInfo {
 
         this.krToUs_msg = null;  // no10 : krToUs_msg 
         this.usToKr_msg = null;  // no11 : usToKr_msg
+
+        this.title = null;  // no28 : title
+        this.kr_size = null;  // no29 : krsize
 
         // 아래부터는 자동 계산 영역
         this.kr_final_buy_prc = null;   // no12 : kr_final_buy_prc
@@ -86,20 +97,21 @@ module.exports =  class msgInfo {
         // krToUs_prc_roi = krToUs_prc_diff / kr_final_buy_prc = (us_final_sell_prc - kr_final_buy_prc) / kr_final_buy_prc
         this.krToUs_prc_roi = (this.kr_final_buy_prc > 0 && this.krToUs_prc_diff != null) ? parseInt((this.krToUs_prc_diff / this.kr_final_buy_prc)*100) : null;
 
-        // krToUs_latest_prc_roi = krToUs_latest_prc_diff / kr_final_latest_buy_prc = ( us_final_sell_latest_prc - kr_final_latest_buy_prc ) / kr_final_latest_buy_prc
-        this.krToUs_latest_prc_roi = (this.kr_final_latest_buy_prc > 0 && this.krToUs_latest_prc_diff != null) ? parseInt((this.krToUs_latest_prc_diff / this.kr_final_latest_buy_prc)*100) : null;
+        // krToUs_latest_prc_roi = krToUs_latest_prc_diff / kr_final_buy_latest_prc = ( us_final_sell_latest_prc - kr_final_buy_latest_prc ) / kr_final_buy_latest_prc
+        this.krToUs_latest_prc_roi = (this.kr_final_buy_latest_prc > 0 && this.krToUs_latest_prc_diff != null) ? parseInt((this.krToUs_latest_prc_diff / this.kr_final_buy_latest_prc)*100) : null;
 
         // usToKr_prc_diff = kr_final_sell_prc - us_final_buy_prc
         this.usToKr_prc_diff =  (this.kr_final_sell_prc > 0 && this.us_final_buy_prc > 0) ? parseInt(this.kr_final_sell_prc - this.us_final_buy_prc) : null ;
 
+        //  usToKr_latest_prc_diff = kr_final_sell_latest_prc - us_final_buy_latest_prc
+        this.usToKr_latest_prc_diff =(this.kr_final_sell_latest_prc > 0 && this.us_final_buy_latest_prc > 0) ? parseInt(this.kr_final_sell_latest_prc - this.us_final_buy_latest_prc) :null;
+        
         // usToKr_latest_prc_roi = usToKr_latest_prc_diff / us_final_buy_latest_prc = kr_final_sell_latest_prc - us_final_buy_latest_prc / us_final_buy_latest_prc
         this.usToKr_latest_prc_roi = (this.us_final_buy_latest_prc > 0 && this.usToKr_latest_prc_diff != null) ? parseInt((this.usToKr_latest_prc_diff / this.us_final_buy_latest_prc)*100) : null ;
         
         // usToKr_prc_roi = usToKr_prc_diff / us_final_buy_prc
         this.usToKr_prc_roi = (this.us_final_buy_prc > 0 && this.usToKr_prc_diff != null) ? parseInt((this.usToKr_prc_diff / this.us_final_buy_prc)*100) : null ;
         
-        //  usToKr_latest_prc_diff = kr_final_sell_latest_prc - us_final_buy_latest_prc
-        this.usToKr_latest_prc_diff =(this.kr_final_sell_latest_prc > 0 && this.us_final_buy_latest_prc > 0) ? parseInt(this.kr_final_sell_latest_prc - this.us_final_buy_latest_prc) :null;
     }
 
     // ------------------ getter setter
@@ -253,6 +265,18 @@ module.exports =  class msgInfo {
         }
         this._krToUs_msg= value;  
     }  
+
+    // no28 : title
+    get title(){
+        return this._title;
+    }
+
+    set title(value){ 
+        if(!value){
+            this._title= null; 
+        }
+        this._title= value;  
+    } 
 
     // no12 : kr_final_buy_prc
     get kr_final_buy_prc(){
@@ -446,4 +470,16 @@ module.exports =  class msgInfo {
         }
         this._usToKr_latest_prc_diff= value;  
     }  
+
+    // no29 : krSize
+    get kr_size(){
+        return this._kr_size;
+    }
+
+    set kr_size(value){ 
+        if(!value){
+            this._kr_size= null; 
+        }
+        this._kr_size= value;  
+    } 
 }

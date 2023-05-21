@@ -1,4 +1,12 @@
-module.exports =  class prodObj {
+/**
+ * 경로 :src/vo/msgTemplate.js
+ * 분류 : VO
+ * 용도 : webhook 메시지 가공에 필요한 상품 전체(최종) 정보 VO
+ * @date        : 2022-09
+ * @author      : yuha
+ * @version	: 3.0
+ */
+module.exports =  class msgTemplate {
     constructor(){
         this.msgInfoMap = null;
         this.finalMsg = null;
@@ -7,10 +15,6 @@ module.exports =  class prodObj {
         this.deliveryFeeToKr = null;
     }
     set msgInfoMap(value){
-        if(!value){
-            // console.log("msgInfoMap을 입력하세요.");
-            //return;
-        }
         this._msgInfoMap = value;
     }
 
@@ -19,10 +23,6 @@ module.exports =  class prodObj {
     }
 
     set finalMsg(value){
-        if(!value){
-            // console.log("finalMsg 입력하세요.");
-            //return;
-        }
         this._finalMsg = value;
     }
 

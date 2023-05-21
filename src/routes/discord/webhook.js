@@ -42,9 +42,9 @@ router.all('/registerJob',
             if(body.intervalUnit != 'once'){
                 await processInfoService.newJob(processInfo);
             }
-            else if(body.intervalUnit == 'once'){
-                await sendingWebhookService.sendWebhookMessage(processInfo);;
-            }
+            //else if(body.intervalUnit == 'once'){
+            await sendingWebhookService.sendWebhookMessage(processInfo);;
+            //}
             res.send({"processInfo" : processInfoService.getProcessInfoMap() });
         }
         catch(err){
