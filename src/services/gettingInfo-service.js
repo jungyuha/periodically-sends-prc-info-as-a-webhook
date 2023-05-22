@@ -49,8 +49,9 @@ const gettingInfoService = {
             path : path,
             scheme : 'https',
             headers: {
-                "x-kream-api-version": "6",
-                "x-kream-device-id": "web;49c40756-3bab-4ad2-8b69-130cac43456a",
+                "x-kream-api-version": "18",
+                "x-kream-device-id": "web;f3aba727-d1de-4a98-b520-758069ef98b1",
+                "x-kream-client-datetime": "20230521150611+0900",
                 "authority" :"kream.co.kr",
                 "scheme" : "https",
                 "path" : "/api/p/products/"+input_prod_id,
@@ -107,8 +108,9 @@ const gettingInfoService = {
             path : '/api/p/products/'+input_prod_id+'/'+size,
             scheme : 'https',
             headers: {
-                "x-kream-api-version": "6",
-                "x-kream-device-id": "web;49c40756-3bab-4ad2-8b69-130cac43456a",
+                "x-kream-api-version": "18",
+                "x-kream-device-id": "web;f3aba727-d1de-4a98-b520-758069ef98b1",
+                "x-kream-client-datetime": "20230521150611+0900",
                 "authority" :"kream.co.kr",
                 "scheme" : "https",
                 "path" : "/api/p/products/"+input_prod_id,

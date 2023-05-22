@@ -103,7 +103,7 @@ async function kreamLastSaleApi (input_prod_id,size) {
             return latestPrc;
         })
         .catch(e => {
-            logger.info("kreamLastPrcApi Error =>"+e);
+            console.log("kreamLastPrcApi Error =>"+e);
             return null;
         });
 }

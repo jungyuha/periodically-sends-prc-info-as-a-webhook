@@ -8,7 +8,18 @@
 <link rel="stylesheet" href="/discord/statics/css/styles.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<style> .modal { position: absolute; top: 10; left: 0; right:0;bottom:0; width: 100%; height: 100%; display: none;background-color: rgba(0, 0, 0, 0.4);} </style>
+<style>
+.modal { position: absolute; top: 10; left: 0; right:0;bottom:0; width: 100%; height: 100%; display: none;background-color: rgba(0, 0, 0, 0.4);}
+.loading-wrapper{
+  background-color: rgba(0,0,0,0.2);
+  position:absolute;
+  top:0px;
+  left:0px;
+  z-index:1200;
+  width:100%;
+  height:100%
+}
+</style>
 </head>
 <!-- Register Job Start -->
 <div class="modal">
@@ -21,13 +32,15 @@
 					<form id="jobRegisterFrm" name="jobRegisterFrm" method="post">
 						<input class="form-control" id="updateProcessId" type="text" hidden/>
 						<div class="row mb-3">
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<div class="form-floating mb-3 mb-md-0">
 									<input class="form-control" id="inputStockXProdId" type="text" placeholder="Enter StockXProdId" />
 									<label for="inputStockXProdId">Input StockX Prod Nm</label>
 								</div>
 							</div>
-							<div class="col-md-6">
+						</div>
+						<div class="row mb-3">
+							<div class="col-md-12">
 								<div class="form-floating">
 									<input class="form-control" id="inputKreamProdId" type="text" placeholder="Enter KreamProdId" />
 									<label for="inputKreamProdId">Input Kream Prod Id</label>
@@ -49,11 +62,7 @@
 							</div>
 						</div>
 						<div class="row mb-3">
-							<div class="col-md-6">
-								<div class="form-floating mb-3 mb-md-0">
-								</div>
-							</div>
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<div class="form-floating mb-3 mb-md-0">
 									<input class="form-control" id="inputExchange" type="number" min=0  placeholder="Enter delivery-Fee" />
 									<label for="inputExchange" id="exchangeLabel">환율(1달러당)</label>
@@ -61,6 +70,12 @@
 							</div>
 						</div>
 						<div class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-floating mb-3 mb-md-0">
+									<input class="form-control" id="inputInterval" type="number" min=0  placeholder="Enter Interval" />
+									<label for="inputInterval" id="interValLabel">Interval</label>
+								</div>
+							</div>
 							<div class="col-md-6">
 								<div class="form-floating mb-3 mb-md-0">
 									<select name="intervalUnit" id="intervalUnit" onchange="comparePrcMain.selectOnChange();" style="width:100%">           
@@ -72,22 +87,16 @@
 									 </select>
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-floating mb-3 mb-md-0">
-									<input class="form-control" id="inputInterval" type="number" min=0  placeholder="Enter Interval" />
-									<label for="inputInterval" id="interValLabel">Interval</label>
-								</div>
-							</div>
 						</div>
 						<div class="mt-4 mb-0" id="register_tag">
 							<div class="d-grid"><a class="btn btn-primary btn-block" onclick="comparePrcMain.registerJob();">Register Job</a></div>
 						</div>
 						<div class="mt-4 mb-0" id="update_tag">
-							<a class="btn btn-primary4 loadingClick update_tag" onclick="comparePrcMain.updateJob('start')">restart</a>
-							<a class="btn btn-primary3 loadingClick update_tag" onclick="comparePrcMain.updateJob('stop')">stop</a>
-							<a class="btn btn-primary2 loadingClick update_tag" onclick="comparePrcMain.updateJob('delete')">Delete</a>
+							<a class="btn btn-success loadingClick update_tag" onclick="comparePrcMain.updateJob('start')">restart</a>
+							<a class="btn btn-warning loadingClick update_tag" onclick="comparePrcMain.updateJob('stop')">stop</a>
+							<a class="btn btn-danger loadingClick update_tag" onclick="comparePrcMain.updateJob('delete')">Delete</a>
 							<a class="btn btn-primary loadingClick update_tag" onclick="comparePrcMain.updateJob('update')">update</a>
-							<a class="btn btn-primary loadingClick" onclick="comparePrcMain.sendWebhook()">sendWebhook</a>
+							<a class="btn btn-outline-primary loadingClick" onclick="comparePrcMain.sendWebhook()">sendWebhook</a>
 						</div>
 						<div class="mt-4 mb-0">
 							<div class="d-grid"><a class="btn btn-primary btn-block loadingClick" onclick="comparePrcMain.closeModal();">Close</a></div>
@@ -137,8 +146,8 @@
 							<div class="card bg-primary text-white mb-4">
 								<div class="card-body">배치(Job) 등록</div>
 								<div class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" href="javascript:$('.modal').css('display','block');$('#update_tag').css('display','none');
-									$('#register_tag').css('display','block');">Click Here</a>
+									<a class="small text-white stretched-link" href="javascript:$('.modal').show();$('#update_tag').hide();
+									$('#register_tag').show();">Click Here</a>
 									<div class="small text-white"><i class="fas fa-angle-right"></i></div>
 								</div>
 							</div>
@@ -181,12 +190,12 @@
 										<th>배치(JOB) 수정일시</th>
 									</tr>
 								</thead>
-								<tbody id="dynamicTbody">
+								<tbody>
 									<% for(key in processInfo){%>
 										<tr onclick="comparePrcMain.updateModalOpen('<%= key %>');">
-											<td id="tdProcessId<%= key %>"><input id="tdProcessId<%= key %>" type="hidden" value="<%= processInfo[key].processId %>"/><%= processInfo[key].processId %></td>
-											<td id="tdStockXUrl<%= key %>"><input id="tdStockXUrl<%= key %>" type="hidden" value="<%= processInfo[key].stockXUrl %>"/><%= processInfo[key].stockXUrl %></td>
-											<td id="tdKreamUrl<%= key %>"><input id="tdKreamUrl<%= key %>" type="hidden" value="<%= processInfo[key].kreamUrl %>"/><%= processInfo[key].kreamUrl %></td>
+											<td id="tdProcessId<%= key %>"><input id="tdProcessId<%= key %>" type="hidden" value="<%= processInfo[key].processId %>"/><a href="javascript:comparePrcMain.updateModalOpen('<%= key %>');"><%= processInfo[key].processId %></a></td>
+											<td id="tdStockXUrl<%= key %>"><input id="tdStockXUrl<%= key %>" type="hidden" value="<%= processInfo[key].stockXUrl %>"/><a href="javascript:window.open('<%= processInfo[key].stockXUrl %>');"><%= processInfo[key].stockXUrl %></a></td>
+											<td id="tdKreamUrl<%= key %>"><input id="tdKreamUrl<%= key %>" type="hidden" value="<%= processInfo[key].kreamUrl %>"/><a href="javascript:window.open('<%= processInfo[key].kreamUrl %>');"><%= processInfo[key].kreamUrl %></a></td>
 											<td id="tdIntervalUnit<%= key %>"><input id="tdIntervalUnit<%= key %>" type="hidden" value="<%= processInfo[key].intervalUnit %>"/><%= processInfo[key].intervalUnit %></td>
 											<td id="tdInterval<%= key %>"><input id="tdInterval<%= key %>" type="hidden" value="<%= processInfo[key].interval %>"/><%= processInfo[key].interval %></td>
 											<td id="tdStatus<%= key %>"><input id="tdStatus<%= key %>" type="hidden" value="<%= processInfo[key].status %>"/><%= processInfo[key].status %></td>
@@ -275,41 +284,43 @@
 	};
 	// 로딩 시작
 	comparePrcMain.loadingStart = function loadingStart(){
-		$('#loadingLayer').css('display','block');
+		$('#loadingLayer').show();
 		$('#loadingClick').css('pointer-events','none');
 	};
 	// 로딩 끝
 	comparePrcMain.loadingEnd = function loadingEnd(){
-		$('#loadingLayer').css('display','none');
+		$('#loadingLayer').hide();
 		$('#loadingClick').css('pointer-events','auto');
 	};
 	//job 테이블 렌더링
 	comparePrcMain.tableRerendering = function tableRerendering(processInfo){
-				globalProcessInfo = processInfo;
-				var html = '';	
-				if(Object.keys(processInfo).length == 0){
-					html += '<tr>';
-				html += '<td class="dataTables-empty" colspan="7">No entries found</td>';
-				html += '</tr>';	
-				}
-				for(key in processInfo){
-				html += '<tr onclick="comparePrcMain.updateModalOpen('+processInfo[key].processId+');">';
-				html += '<td id="tdProcessId'+processInfo[key].processId+'">'+'<input id="tdProcessId'+processInfo[key].processId+'" type="hidden" value="'+processInfo[key].processId+'"/>'+processInfo[key].processId+'</td>';
-				html += '<td id="tdStockXUrl'+processInfo[key].processId+'">'+processInfo[key].stockXUrl+'</td>';
-				html += '<td id="tdKreamUrl'+processInfo[key].processId+'">'+processInfo[key].kreamUrl+'</td>';
-				html += '<td id="tdIntervalUnit'+processInfo[key].processId+'">'+processInfo[key].intervalUnit+'</td>';
-				html += '<td id="tdInterval'+processInfo[key].processId+'">'+processInfo[key].interval+'</td>';
-				html += '<td id="tdStatus'+processInfo[key].processId+'">'+processInfo[key].status+'</td>';
-				html += '<td id="tdLastSent'+processInfo[key].processId+'">'+processInfo[key].lastSent+'</td>';
-				html += '<td id="tdLastModified'+processInfo[key].processId+'">'+processInfo[key].lastModified+'</td>';
-				html += '</tr>';
-				}
-				$("#dynamicTbody").empty();
-				$("#dynamicTbody").append(html);
+				// globalProcessInfo = processInfo;
+				// var html = '';	
+				// if(Object.keys(processInfo).length == 0){
+				// 	html += '<tr>';
+				// html += '<td class="dataTables-empty" colspan="7">No entries found</td>';
+				// html += '</tr>';	
+				// }
+				// for(key in processInfo){
+				// html += '<tr onclick="comparePrcMain.updateModalOpen('+processInfo[key].processId+');">';
+				// html += '<td id="tdProcessId'+processInfo[key].processId+'">'+'<input id="tdProcessId'+processInfo[key].processId+'" type="hidden" value="'+processInfo[key].processId+'"/>'+processInfo[key].processId+'</td>';
+				// html += '<td id="tdStockXUrl'+processInfo[key].processId+'">'+processInfo[key].stockXUrl+'</td>';
+				// html += '<td id="tdKreamUrl'+processInfo[key].processId+'">'+processInfo[key].kreamUrl+'</td>';
+				// html += '<td id="tdIntervalUnit'+processInfo[key].processId+'">'+processInfo[key].intervalUnit+'</td>';
+				// html += '<td id="tdInterval'+processInfo[key].processId+'">'+processInfo[key].interval+'</td>';
+				// html += '<td id="tdStatus'+processInfo[key].processId+'">'+processInfo[key].status+'</td>';
+				// html += '<td id="tdLastSent'+processInfo[key].processId+'">'+processInfo[key].lastSent+'</td>';
+				// html += '<td id="tdLastModified'+processInfo[key].processId+'">'+processInfo[key].lastModified+'</td>';
+				// html += '</tr>';
+				// }
+				// $("#dynamicTbody").empty();
+				// $("#dynamicTbody").append(html);
+
+				location.reload();
 	};
 	//job 등록
     comparePrcMain.registerJob = function registerJob(){
-		$('.modal').css('display','block');
+		$('.modal').show();
 		if(!comparePrcMain.formValidation()){
 			return;
 		}
@@ -341,7 +352,7 @@
 };
 	//job 수정 
     comparePrcMain.updateJob = function updateJob(updateType){
-		$('.modal').css('display','block');
+		$('.modal').show();
 		if(!comparePrcMain.formValidation()){
 			return;
 		}
@@ -379,7 +390,7 @@
 
 // webhook 보내기
 comparePrcMain.sendWebhook = function sendWebhook(){
-	$('.modal').css('display','block');
+	$('.modal').show();
 	if(!comparePrcMain.formValidation()){
 		return;
 	}
@@ -414,7 +425,7 @@ comparePrcMain.sendWebhook = function sendWebhook(){
 		})
 };
 comparePrcMain.closeModal = function closeModal(){
-	$('.modal').css('display','none');
+	$('.modal').hide();
 	$("#inputStockXProdId").val("");
 	$("#inputKreamProdId").val("");
 	$("#intervalUnit").val("");
@@ -429,12 +440,12 @@ comparePrcMain.closeModal = function closeModal(){
 comparePrcMain.updateModalOpen = function updateModalOpen(key){
 	console.log("!!!!"  + globalProcessInfo[key].intervalUnit);
 	if(globalProcessInfo[key].intervalUnit == 'once'){
-		$('.update_tag').css('display','none');
-		$('#register_tag').css('display','none');
+		$('.update_tag').hide();
+		$('#register_tag').hide();
 	}
 	else{
-		$('.update_tag').css('display','block');
-		$('#register_tag').css('display','none');		
+		$('.update_tag').show();
+		$('#register_tag').hide();	
 	}
 	$("#inputStockXProdId").val(globalProcessInfo[key].stockXProdId);
 	$("#inputKreamProdId").val(globalProcessInfo[key].kreamProdId);
@@ -444,7 +455,7 @@ comparePrcMain.updateModalOpen = function updateModalOpen(key){
 	$("#inputDeliveryFeeToKr").val(globalProcessInfo[key].deliveryFeeToKr);
 	$("#inputExchange").val(globalProcessInfo[key].exchange);
 	$("#updateProcessId").val(key);
-	$('.modal').css('display','block');
+	$('.modal').show();
 };
 
 //모든 프로세스 멈춤
