@@ -83,6 +83,7 @@ router.all('/updateProcess',
 router.get('/stopAllProcess',
     async function(req, res, next) {
         await processInfoService.stopAllJob();
+        res.send({"processInfo" : processInfoService.getProcessInfoMap() });
     }
 );
 

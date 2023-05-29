@@ -137,7 +137,7 @@
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
-					<h1 class="mt-4">Dashboard</h1>
+					<h1 class="mt-4">가격 비교 알리미</h1>
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item active">compare price</li>
 					</ol>
@@ -212,7 +212,7 @@
 			<footer class="py-4 bg-light mt-auto">
 				<div class="container-fluid px-4">
 					<div class="d-flex align-items-center justify-content-between small">
-						<div class="text-muted">Copyright &copy; Yuha Website 2021</div>
+						<div class="text-muted">Copyright &copy; Yuha Website 2023</div>
 					</div>
 				</div>
 			</footer>
@@ -438,7 +438,6 @@ comparePrcMain.closeModal = function closeModal(){
 };
 
 comparePrcMain.updateModalOpen = function updateModalOpen(key){
-	console.log("!!!!"  + globalProcessInfo[key].intervalUnit);
 	if(globalProcessInfo[key].intervalUnit == 'once'){
 		$('.update_tag').hide();
 		$('#register_tag').hide();
@@ -463,7 +462,7 @@ comparePrcMain.stopAllProcess = function stopAllProcess(){
 		if (confirm("모든 프로세스가 정지됩니다.") == false){
 			return;
 		}
-		comparePrcMain.loadingStart();
+		//comparePrcMain.loadingStart();
         $.ajax({ 
             url: "/discord/stopAllProcess", 
             data: {
@@ -472,11 +471,12 @@ comparePrcMain.stopAllProcess = function stopAllProcess(){
             dataType: "json"
         })
         .done(function(res) {
-			comparePrcMain.loadingEnd();
+			alert("모든 프로세스가 정지되었습니다.");
+			//comparePrcMain.loadingEnd();
 			comparePrcMain.tableRerendering(res.processInfo);
         })
         .fail(function(xhr, status, errorThrown) {
-			comparePrcMain.loadingEnd();
+			//comparePrcMain.loadingEnd();
             alert("실패하였습니다.잠시 후 다시 시도해주세요.");
         })
 };

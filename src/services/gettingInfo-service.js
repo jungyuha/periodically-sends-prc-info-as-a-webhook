@@ -40,10 +40,13 @@ const gettingInfoService = {
         return stockXData;
 	},
 	kreamApi: async(param) => {
+        let dt = new Date();
         var kreamData = new prodObj(); 
         var apiResult = new apiResult_();      
         var input_prod_id = param.kreamProdId
-        let path = 'api/p/products/'+input_prod_id;          
+        let path = 'api/p/products/'+input_prod_id; 
+        let client_datetime = dt.getFullYear()+(dt.getMonth()+1)+dt.getDate()+dt.getHours()+dt.getMinutes()+dt.getSeconds()+"+0900"; 
+        console.log("date time :::::::::::"+client_datetime) ;//    "20230521150611+0900"   
         let options = {
             method: 'GET',
             path : path,
@@ -51,7 +54,7 @@ const gettingInfoService = {
             headers: {
                 "x-kream-api-version": "18",
                 "x-kream-device-id": "web;f3aba727-d1de-4a98-b520-758069ef98b1",
-                "x-kream-client-datetime": "20230521150611+0900",
+                "x-kream-client-datetime": client_datetime,
                 "authority" :"kream.co.kr",
                 "scheme" : "https",
                 "path" : "/api/p/products/"+input_prod_id,

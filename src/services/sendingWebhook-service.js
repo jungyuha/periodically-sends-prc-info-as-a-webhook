@@ -31,16 +31,16 @@ const sendingWebhookService = {
             });
             
             for(let key in sorted){
-                if(sorted[key].krToUs_prc_diff > 0){
+                //if(sorted[key].krToUs_prc_diff > 0){
                     embed.addField(sorted[key].title,sorted[key].krToUs_msg);
-                }
+                //}
             }
             
             embed.addField('[US => KR]', '--------------------------------------------------------------');
             for(let key in sorted){
-                if(sorted[key].usToKr_prc_diff > 0){
+                //if(sorted[key].usToKr_prc_diff > 0){
                     embed.addField(sorted[key].title,sorted[key].usToKr_msg);
-                }
+                //}
             }
 
             return embed;
